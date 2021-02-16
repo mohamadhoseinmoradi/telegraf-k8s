@@ -1,0 +1,32 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    cert-manager.io/cluster-issuer: ntw-cert
+    ingress.kubernetes.io/auth-type: basic
+    ingress.kubernetes.io/auth-secret: telegraf-basicauth
+    ingress.kubernetes.io/auth-realm: "Authentication Required"
+
+  name: telegraf-ingress
+  namespace: dc
+spec:
+  tls:
+  - secretName: ntw-cert
+  rules:
+  - host: ntw-k8s-telegraf.net.roo.cloud
+    http:
+      paths:
+      - backend:
+          serviceName: telegraf-pod1-svc-cip
+          servicePort: 8080
+        path: /pod1-metrics
+
+      - backend:
+          serviceName: telegraf-pod2-svc-cip
+          servicePort: 8080
+        path: /pod2-metrics
+
+      - backend:
+          serviceName: telegraf-pod3-svc-cip
+          servicePort: 8080
+        path: /pod3-metrics
