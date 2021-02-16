@@ -7,7 +7,7 @@ spec:
     matchLabels:
       app: telegraf-podx
   minReadySeconds: 5
-  replicas: 1
+  replicas: 2
   template:
     metadata:
       labels:
@@ -15,19 +15,19 @@ spec:
     spec:
       containers:
         - image: networktelegraf/networktelegraf:1.16.2
-          imagePullPolicy: Always
+          imagePullPolicy: IfNotPresent
           name: telegraf-podx
           ports:
           - containerPort: 9126
           resources:
             limits:
-              cpu: "1.5"
-              ephemeral-storage: 300Mi
-              memory: 2Gi
-            requests:
               cpu: "1"
-              ephemeral-storage: 300Mi
+              ephemeral-storage: 200Mi
               memory: 1Gi
+            requests:
+              cpu: "0.5"
+              ephemeral-storage: 100Mi
+              memory: 500Mi
           volumeMounts:
             - mountPath: /etc/telegraf/telegraf.conf
               name: telegraf-config

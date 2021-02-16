@@ -1,4 +1,3 @@
-to get informed about the service design , traffic flow and the basic functionalities of this service please see the [wiki](https://git.cafebazaar.ir/network/k8s-manifests/telegraf-k8s/-/wikis/telegraf-k8s) .
 
 # Dockerfile
 
@@ -7,16 +6,12 @@ container image we used a Dockerfile and installed MTR package into it .
 after the first pilot , we encountered a huge zombie processes caused by "Exec MTR" module and made the k8s worker nodes to operate faulty and disrupt some services like CNI and etc.
 so we had to use a PID 1 to fulfil the lack of init in container and we prefered to use "Tini" as the PID 1 to control zombie reaping caused by "Exec MTR".
 
-to rebuild your custom image you can also use `registry.cafebazaar.ir` as a local image repository intead of docker hub.
+to rebuild your custom image you can also a local image repository or any kind of container Registry instead of docker hub.
 
 # Secret
 
 for credentials , ingress authentication and ingress TLS
 
-influxDB secrets:
-if you are using influxdb as the output plugin to store and process metrics for this secrets file use :
-`kubectl apply -f telegraf-influxdb-secret.yml` or `kubectl create secret generic telegraf-influxdb-secret --from-file=secret.yml`
-verify the secrets with ==> `kubectl get secrets` .
 
 ingress basic authentication:
 install `apache2-utils` and create a username and password file called auth using htpasswd ==> `htpasswd -C auth telegraf`
@@ -55,6 +50,6 @@ to deploy a telegraf pod on k8s you can use `kubectl apply -f telegraf-deploymen
 to expose metrics from pods we have to create an ingress resource with basic authentication and TLS enabled .
 for basic authentication and TLS you have to use some annotations which are present in the ingress file sample .
 then we create backends for each pod and route the traffic to desired backend pods using ingress(nginx) rules .
-we use `ntw-k8s-telegraf.net.roo.cloud` domain in ingress and for this project .
+we use `test.your_domain.example` domain in ingress and for this project .
 to create an ingress resource use:
 `kubectl apply -f teleraf-ingress.yml`
